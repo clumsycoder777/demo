@@ -1,5 +1,73 @@
-<h1>{{article.title}}</h1>
+{% for block in section.blocks %}
+    {% case block.type %}
+        {% when 'article_title' %}
+            <h1>{{article.title}}</h1>
+        {% when 'article_author' %}
+            {% if  section.settings.enabled_author %}
+                <small>
+                {{article.author}}
+            </small>
+            {% endif %}
+        {% when 'article_published_date' %}
+            {% if section.settings.enabled_published %}
 
-<small>
-    {{article.author}}
-</small>
+                <time datetime="{{article.published_at | date : '%Y-%m-%d'}}">{{article.published_at | date : '%Y-%m-%d'}}</time>
+                {% endif %}
+                
+        {% when 'featured_image' %}
+            <img src="{{article.image |  img_url:'large'}}" alt = "{{ article.image.alt }}">
+
+        {% when 'article_content' %}
+            <div class="{{article.content}}"></div>
+        {% else %}
+            
+    {% endcase %}
+{% endfor %}
+
+{% schema %}
+{
+    "name": "Template",
+    "settings": [
+        {
+            "type":"checkbox",
+            "id": "enabled_author",
+            "default": true,
+            "label": "Display Author Name"
+        },
+        {
+            "type": "checkbox" ,
+            "id" : "enabled_published",
+            "default": true,
+            "label" : "Display Time"
+        }
+        
+        ],
+        "blocks": [
+            {
+                "type" : "article_title",
+                "name" : "Title",
+                "limit": 1
+            },
+            {
+                "type" : "article_author",
+                "name" : "Author",
+                "limit": 1
+            },
+            {
+                "type": "article_published_date",
+                "name" : "Published Date",
+                "limit": 1
+            },
+            {
+                "type" : "featured_image",
+                "name" : "Thumbnail",
+                "limit" : 1
+            },
+            {
+                "type": "article_content",
+                "name" : "Content",
+                "limit" : 1
+            }
+        ]
+}
+{% endschema %}
