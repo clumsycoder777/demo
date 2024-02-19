@@ -10,12 +10,10 @@
             {% endif %}
         {% when 'article_published_date' %}
             {% if section.settings.enabled_published %}
-
                 <time datetime="{{article.published_at | date : '%Y-%m-%d'}}">{{article.published_at | date : '%Y-%m-%d'}}</time>
-                {% endif %}
-                
+                {% endif %}  
         {% when 'featured_image' %}
-            <img src="{{article.image |  img_url:'large'}}" alt = "{{ article.image.alt }}">
+            <img src="{{article.image |  img_url:'large'}}" alt = "{{ article.image.alt }}" width="" height="">
 
         {% when 'article_content' %}
             <div class="{{article.content}}"></div>
