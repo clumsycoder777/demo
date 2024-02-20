@@ -1,31 +1,50 @@
-<article>
+<article class="py-8">
     {% for block in section.blocks %}
         {% case block.type %}
             {% when 'article_title' %}
-                <div class="flex items-center justifycenter">
-                    <div class="max-w-7xl">
-                        <a href="{{blog.url}}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{blog.title}}</a>
-                        <h1 class="text 4xl md:text-6xl font-medium">{{article.title}}</h1>
+                <div class="flex items-center justify-center h-full">
+    <div class="max-w-7xl text-center">
+        <div class="flex flex-col items-center justify-center"> <!-- New wrapping div with flex properties -->
+            <a href="{{blog.url}}" class="text-base uppercase text-gray-500 hover:text-gray-900 font-bold">{{blog.title}}</a>
+            <h1 class="text-4xl md:text-6xl font-medium">{{article.title}}</h1>
+        </div>
+    </div>
+</div>
+
+              
+            {% when 'article_author' %}
+                <div class="flex items-center justify-center">
+                    <div class="max-w-7xl text-center">
+                        {% if  section.settings.enabled_author %}
+                            <small>
+                            {{article.author}}
+                        </small>
+                        {% endif %}
                     </div>
                 </div>
-                <h1>{{article.title}}</h1>
-            {% when 'article_author' %}
-                {% if  section.settings.enabled_author %}
-                    <small>
-                    {{article.author}}
-                </small>
-                {% endif %}
             {% when 'article_published_date' %}
-                {% if section.settings.enabled_published %}
-                    <time datetime="{{article.published_at | date : '%Y-%m-%d'}}">{{article.published_at | date : '%Y-%m-%d'}}</time>
-                    {% endif %}  
+                <div class="flex items-center justify-center">
+                    <div class="max-w-7xl text-center">
+                        {% if section.settings.enabled_published %}
+                            <time datetime="{{article.published_at | date : '%Y-%m-%d'}}">{{article.published_at | date : '%Y-%m-%d'}}</time>
+                            {% endif %}  
+                    </div>
+                </div>  
             {% when 'featured_image' %}
-                <img src="{{article.image |  img_url:'large'}}" alt = "{{ article.image.alt }}" width="" height="">
-    
+                <div class="max-w-7xl bg-blue-100 rounded-lg mx-2 md:mx-auto overflow-hidden my-4">
+                    {% if  article.image != blank%} 
+                        <img class= "w-full h-80 md:h-96 object-cver object-center" src="{{article.image |  img_url:'large'}}" alt = "{{ article.image.alt }}" width="" height="">
+                    {% else %}
+                    {% assign placeholder_image = 'lifestyle-1'%}
+                    {{ placeholder_image |  placeholder_svg_tag: 'w-full h-80 md:h-96 object-cover object-center p-5' }}
+                    {% endif %}  
+                </div>
             {% when 'article_content' %}
-                <div class="{{article.content}}"></div>
-            {% else %}
-                
+                <div class="flex items-center justify-center">
+                    <div class="max-w-7xl">
+                        {{article.content}}
+                    </div></div>
+            {% else %}     
         {% endcase %}
     {% endfor %}    
 </article>
