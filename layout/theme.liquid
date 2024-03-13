@@ -13,8 +13,9 @@
     {{ 'application.js' | asset_url | script_tag }}
   </head>
   <body class=" text-xl">
+    {% section 'header' %}
     <main role="main">
-      hello worlss
+      
       {{ content_for_layout }}
     </main>
   </body>
